@@ -742,7 +742,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BackGroundColor: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -2201,7 +2201,7 @@ MonoBehaviour:
   enemyBattleStation: {fileID: 1466009198}
   dialogueText: {fileID: 2083877341}
   playerHUD: {fileID: 1727677075}
-  enemyHUD: {fileID: 0}
+  enemyHUD: {fileID: 978546682}
   state: 0
 --- !u!4 &1714929644
 Transform:
@@ -3130,14 +3130,119 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4762221609743764049, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
         type: 3}
+      propertyPath: m_Colors.m_PressedColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4762221609743764049, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
+        type: 3}
+      propertyPath: m_Colors.m_PressedColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4762221609743764049, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
+        type: 3}
+      propertyPath: m_Colors.m_PressedColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4762221609743764049, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
+        type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.b
+      value: 0.6792453
+      objectReference: {fileID: 0}
+    - target: {fileID: 4762221609743764049, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
+        type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.g
+      value: 0.6792453
+      objectReference: {fileID: 0}
+    - target: {fileID: 4762221609743764049, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
+        type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.r
+      value: 0.6792453
+      objectReference: {fileID: 0}
+    - target: {fileID: 4762221609743764049, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1714929643}
     - target: {fileID: 5203874407931420859, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
         type: 3}
+      propertyPath: m_Colors.m_PressedColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203874407931420859, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
+        type: 3}
+      propertyPath: m_Colors.m_PressedColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203874407931420859, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
+        type: 3}
+      propertyPath: m_Colors.m_PressedColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203874407931420859, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
+        type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.b
+      value: 0.68235296
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203874407931420859, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
+        type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.g
+      value: 0.68235296
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203874407931420859, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
+        type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.r
+      value: 0.68235296
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203874407931420859, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1714929643}
+    - target: {fileID: 7797203129103715107, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
+        type: 3}
+      propertyPath: m_Colors.m_PressedColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7797203129103715107, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
+        type: 3}
+      propertyPath: m_Colors.m_PressedColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7797203129103715107, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
+        type: 3}
+      propertyPath: m_Colors.m_PressedColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7797203129103715107, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
+        type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.b
+      value: 0.68235296
+      objectReference: {fileID: 0}
+    - target: {fileID: 7797203129103715107, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
+        type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.g
+      value: 0.68235296
+      objectReference: {fileID: 0}
+    - target: {fileID: 7797203129103715107, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
+        type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.r
+      value: 0.68235296
+      objectReference: {fileID: 0}
+    - target: {fileID: 7797203129103715107, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1714929643}
+    - target: {fileID: 7797203129103715107, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnAttackButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 7797203129103715107, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: BattleSystem, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 8401705742951113702, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
         type: 3}
       propertyPath: m_Name
