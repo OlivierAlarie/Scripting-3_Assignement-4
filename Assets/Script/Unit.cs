@@ -4,14 +4,10 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-
 	public string unitName;
-
 	public int damage;
-
 	public int maxHP;
 	public int currentHP;
-
 	public string currentHand;
 
 	public bool TakeDamage(int dmg)
@@ -31,4 +27,18 @@ public class Unit : MonoBehaviour
 			currentHP = maxHP;
 	}
 
+	public void HandChosen(string hand)
+	{
+		if (hand == "rock")
+		{
+			currentHand = "Rock";
+		}
+		
+		else if (hand == "paper")
+		{
+			currentHand = "Paper";
+		}
+
+		else {currentHand = "Scissors";}
+	}
 }
