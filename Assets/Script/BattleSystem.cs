@@ -24,9 +24,12 @@ public class BattleSystem : MonoBehaviour
 
 	public BattleState state;
 
+	public HandManager HandManager;  
+
     // Start is called before the first frame update
     void Start()
     {
+		HandManager = GetComponentInChildren<HandManager>(true);
 		state = BattleState.START;
 		StartCoroutine(SetupBattle());
     }
@@ -115,7 +118,7 @@ public class BattleSystem : MonoBehaviour
 		playerUnit.Heal(5);
 
 		playerHUD.SetHP(playerUnit.currentHP);
-		dialogueText.text = "You feel renewed strength!";
+		//dialogueText.text = "You feel renewed strength!";
 
 		yield return new WaitForSeconds(2f);
 
@@ -144,6 +147,8 @@ public class BattleSystem : MonoBehaviour
 		if (state != BattleState.PLAYERTURN)
 			return;
 
+		HandManager.PlayHand("Rock");
+		dialogueText.text = "You have chosen rock";
 		StartCoroutine(PlayerHeal());
 	}
 
@@ -152,6 +157,8 @@ public class BattleSystem : MonoBehaviour
 		if (state != BattleState.PLAYERTURN)
 			return;
 
+		HandManager.PlayHand("Paper");
+		dialogueText.text = "You have chosen paper";
 		StartCoroutine(PlayerHeal());
 	}
 
@@ -160,6 +167,8 @@ public class BattleSystem : MonoBehaviour
 		if (state != BattleState.PLAYERTURN)
 			return;
 
+		HandManager.PlayHand("Scissors");
+		dialogueText.text = "You have chosen scissors";
 		StartCoroutine(PlayerHeal());
 	}
 
