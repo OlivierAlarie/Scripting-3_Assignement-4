@@ -24,7 +24,17 @@ public class BattleSystem : MonoBehaviour
 
 	public BattleState state;
 
-	public HandManager HandManager;  
+	public HandManager HandManager;
+
+	[Header("Player Sprites Variables")]
+	[SerializeField] private float _playerDamagedTimeDelay = 2f;
+	[SerializeField] private float _playerDamagedFlashDelay = 0.1f;
+	[SerializeField] private bool _playerIsDamaged = false;
+	[SerializeField] private SpriteRenderer _playerSpriteRenderer;
+	[SerializeField] private GameObject _playerRockSprite;
+	[SerializeField] private GameObject _playerPaperSprite;
+	[SerializeField] private GameObject _playerScissorsSprite;
+	[SerializeField] private GameObject _playerUnknownSprite;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +43,8 @@ public class BattleSystem : MonoBehaviour
 		state = BattleState.START;
 		StartCoroutine(SetupBattle());
     }
+
+
 
 	IEnumerator SetupBattle()
 	{
@@ -83,6 +95,10 @@ public class BattleSystem : MonoBehaviour
 
 		playerHUD.SetHP(playerUnit.currentHP);
 
+		_playerIsDamaged = true;
+		StartCoroutine(PlayerDamagedFlash());
+		StartCoroutine(HandlePlayerDamagedDelay());
+
 		yield return new WaitForSeconds(1f);
 
 		if(isDead)
@@ -111,6 +127,10 @@ public class BattleSystem : MonoBehaviour
 	void PlayerTurn()
 	{
 		dialogueText.text = "Choose an action:";
+		_playerRockSprite.SetActive(false);
+		_playerPaperSprite.SetActive(false);
+		_playerScissorsSprite.SetActive(false);
+		_playerUnknownSprite.SetActive(true);	
 	}
 
 	IEnumerator PlayerHeal()
@@ -141,6 +161,10 @@ public class BattleSystem : MonoBehaviour
 
 		HandManager.PlayHand("Rock");
 		dialogueText.text = "You have chosen rock";
+		_playerRockSprite.SetActive(true);
+		_playerPaperSprite.SetActive(false);
+		_playerScissorsSprite.SetActive(false);
+		_playerUnknownSprite.SetActive(false);
 		StartCoroutine(PlayerHeal());
 	}
 
@@ -151,6 +175,10 @@ public class BattleSystem : MonoBehaviour
 
 		HandManager.PlayHand("Paper");
 		dialogueText.text = "You have chosen paper";
+		_playerRockSprite.SetActive(false);
+		_playerPaperSprite.SetActive(true);
+		_playerScissorsSprite.SetActive(false);
+		_playerUnknownSprite.SetActive(false);
 		StartCoroutine(PlayerHeal());
 	}
 
@@ -161,7 +189,29 @@ public class BattleSystem : MonoBehaviour
 
 		HandManager.PlayHand("Scissors");
 		dialogueText.text = "You have chosen scissors";
+		_playerRockSprite.SetActive(false);
+		_playerPaperSprite.SetActive(false);
+		_playerScissorsSprite.SetActive(true);
+		_playerUnknownSprite.SetActive(false);		
+		
 		StartCoroutine(PlayerHeal());
 	}
+
+	public IEnumerator PlayerDamagedFlash() //IEnumerator is useful to add delays
+    { 
+        while (_playerIsDamaged) 
+        {
+            _playerSpriteRenderer.color = new Color(1f, 1f, 1f, 0f); //Flashing animation from max opacity to none (r,g,b,a)
+            yield return new WaitForSeconds(_playerDamagedFlashDelay);
+            _playerSpriteRenderer.color = new Color(1f, 1f, 1f, 1f);
+            yield return new WaitForSeconds(_playerDamagedFlashDelay);
+        }
+    }
+
+    public IEnumerator HandlePlayerDamagedDelay() //Timer on the player damaged state
+    {
+        yield return new WaitForSeconds(_playerDamagedTimeDelay);
+        _playerIsDamaged = false;
+    }
 
 }
