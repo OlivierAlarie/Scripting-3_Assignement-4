@@ -134,14 +134,6 @@ public class BattleSystem : MonoBehaviour
 		StartCoroutine(PlayerAttack());
 	}
 
-	public void OnHealButton()
-	{
-		if (state != BattleState.PLAYERTURN)
-			return;
-
-		StartCoroutine(PlayerHeal());
-	}
-
 	public void RockButton()
 	{
 		if (state != BattleState.PLAYERTURN)
