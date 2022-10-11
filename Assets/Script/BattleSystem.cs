@@ -20,6 +20,7 @@ public class BattleSystem : MonoBehaviour
 	public HandManager HandManager;
 
 	[Header("Player Variables")]
+	[SerializeField] private GameObject _PlayerButtons;
 	private float _playerDamagedTimeDelay = 1f;
 	private float _playerDamagedFlashDelay = 0.1f;
 	private bool _playerIsDamaged = false;
@@ -58,6 +59,8 @@ public class BattleSystem : MonoBehaviour
 		enemyHUD.SetHUD(enemyUnit);
 
 		yield return new WaitForSeconds(2f);
+
+		_PlayerButtons.SetActive(true);
 
 		state = BattleState.PLAYERTURN;
 		PlayerTurn();
