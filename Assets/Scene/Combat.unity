@@ -2415,6 +2415,10 @@ MonoBehaviour:
   _playerPaperSprite: {fileID: 2140993063}
   _playerScissorsSprite: {fileID: 99314546}
   _playerUnknownSprite: {fileID: 1661405510}
+  Choices:
+  - Rock
+  - Paper
+  - Scissors
   _enemySpriteRenderer: {fileID: 1466009197}
   _enemyRockSprite: {fileID: 356420713}
   _enemyPaperSprite: {fileID: 1501286897}

@@ -7,27 +7,20 @@ public enum BattleState { START, PLAYERTURN, ENEMYTURN, BATTLEPHASE, WON, LOST }
 
 public class BattleSystem : MonoBehaviour
 {
-
 	public GameObject playerPrefab;
 	public GameObject enemyPrefab;
-
 	public Transform playerBattleStation;
 	public Transform enemyBattleStation;
-
 	Unit playerUnit;
 	Unit enemyUnit;
-
 	public Text dialogueText;
-
 	public BattleHUD playerHUD;
 	public BattleHUD enemyHUD;
-
 	public BattleState state;
-
 	public HandManager HandManager;
 
 	[Header("Player Variables")]
-	private float _playerDamagedTimeDelay = 2f;
+	private float _playerDamagedTimeDelay = 1f;
 	private float _playerDamagedFlashDelay = 0.1f;
 	private bool _playerIsDamaged = false;
 	[SerializeField] private SpriteRenderer _playerSpriteRenderer;
@@ -44,7 +37,6 @@ public class BattleSystem : MonoBehaviour
 	[SerializeField] private GameObject _enemyScissorsSprite;
 	[SerializeField] private GameObject _enemyUnknownSprite;
 
-    // Start is called before the first frame update
     void Start()
     {
 		HandManager = GetComponentInChildren<HandManager>(true);
@@ -75,10 +67,12 @@ public class BattleSystem : MonoBehaviour
 	{
 		bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
 
-		enemyHUD.SetHP(enemyUnit.currentHP);
-		dialogueText.text = "The attack is successful!";
+		yield return new WaitForSeconds(1f);
 
-		yield return new WaitForSeconds(2f);
+		enemyHUD.SetHP(enemyUnit.currentHP);
+		dialogueText.text = playerUnit.unitName + " has won this round!";
+
+		yield return new WaitForSeconds(1f);
 
 		if(isDead)
 		{
@@ -93,7 +87,7 @@ public class BattleSystem : MonoBehaviour
 
 	IEnumerator EnemyAttack()
 	{
-		dialogueText.text = enemyUnit.unitName + " attacks!";
+		dialogueText.text = enemyUnit.unitName + " has won this round...";
 
 		yield return new WaitForSeconds(1f);
 
@@ -116,6 +110,15 @@ public class BattleSystem : MonoBehaviour
 			state = BattleState.PLAYERTURN;
 			PlayerTurn();
 		}
+	}
+
+	IEnumerator Tiebreaker()
+	{
+		dialogueText.text = "Tiebreaker! Let's continue!";
+
+		yield return new WaitForSeconds(1f);
+		state = BattleState.PLAYERTURN;
+		PlayerTurn();
 	}
 
 	IEnumerator EnemyTurn()
@@ -160,7 +163,7 @@ public class BattleSystem : MonoBehaviour
 
 	IEnumerator ResultTurn()
 	{
-		yield return new WaitForSeconds(2f);
+		yield return new WaitForSeconds(1f);
 
 		if (playerUnit.currentHand == "Rock" && enemyUnit.currentHand == "Scissors")
 		{
@@ -194,14 +197,8 @@ public class BattleSystem : MonoBehaviour
 
 		else 
 		{
-			state = BattleState.PLAYERTURN;
-			PlayerTurn();
+			StartCoroutine(Tiebreaker());
 		}
-
-		//yield return new WaitForSeconds(2f);
-
-		//state = BattleState.PLAYERTURN;
-		//PlayerTurn();
 	}
 
 	void EndBattle()
@@ -230,40 +227,20 @@ public class BattleSystem : MonoBehaviour
 		_enemyScissorsSprite.SetActive(false);
 		_enemyUnknownSprite.SetActive(true);
 	}
-/*
-	IEnumerator PlayerHeal()
-	{
-		playerUnit.Heal(5);
 
-		playerHUD.SetHP(playerUnit.currentHP);
-		//dialogueText.text = "You feel renewed strength!";
-
-		yield return new WaitForSeconds(2f);
-
-		state = BattleState.ENEMYTURN;
-		StartCoroutine(EnemyTurn());
-	}
-
-	public void OnAttackButton()
-	{
-		if (state != BattleState.PLAYERTURN)
-			return;
-
-		StartCoroutine(PlayerAttack());
-	}
-*/
 	IEnumerator PlayerHand()
 	{
-		yield return new WaitForSeconds(2f);
-
 		state = BattleState.ENEMYTURN;
+		yield return new WaitForSeconds(1f);
 		StartCoroutine(EnemyTurn());
 	}
 
 	public void RockButton()
 	{
 		if (state != BattleState.PLAYERTURN && playerUnit.currentHand != "Unknown")
+		{
 			return;
+		}
 
 		HandManager.PlayHand("Rock");
 		dialogueText.text = "You have chosen rock";
@@ -279,7 +256,9 @@ public class BattleSystem : MonoBehaviour
 	public void PaperButton()
 	{
 		if (state != BattleState.PLAYERTURN && playerUnit.currentHand != "Unknown")
+		{
 			return;
+		}
 
 		HandManager.PlayHand("Paper");
 		dialogueText.text = "You have chosen paper";
@@ -295,7 +274,9 @@ public class BattleSystem : MonoBehaviour
 	public void ScissorsButton()
 	{
 		if (state != BattleState.PLAYERTURN && playerUnit.currentHand != "Unknown")
+		{
 			return;
+		}
 
 		HandManager.PlayHand("Scissors");
 		dialogueText.text = "You have chosen scissors";
