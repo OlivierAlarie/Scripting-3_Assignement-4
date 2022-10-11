@@ -47,8 +47,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitName: Player
   damage: 10
-  maxHP: 25
-  currentHP: 25
+  maxHP: 30
+  currentHP: 30
   currentHand: Unknown
 --- !u!1 &6450721039946225802
 GameObject:

@@ -2410,6 +2410,16 @@ MonoBehaviour:
   enemyHUD: {fileID: 978546682}
   state: 0
   HandManager: {fileID: 1697365168}
+  _playerSpriteRenderer: {fileID: 776899474}
+  _playerRockSprite: {fileID: 2055544231}
+  _playerPaperSprite: {fileID: 2140993063}
+  _playerScissorsSprite: {fileID: 99314546}
+  _playerUnknownSprite: {fileID: 1661405510}
+  _enemySpriteRenderer: {fileID: 1466009197}
+  _enemyRockSprite: {fileID: 356420713}
+  _enemyPaperSprite: {fileID: 1501286897}
+  _enemyScissorsSprite: {fileID: 1708676853}
+  _enemyUnknownSprite: {fileID: 1214213723}
 --- !u!4 &1714929644
 Transform:
   m_ObjectHideFlags: 0

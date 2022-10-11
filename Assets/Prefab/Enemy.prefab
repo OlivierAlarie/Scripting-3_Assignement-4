@@ -45,10 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 475d8d7ed9646504888a5702b5d7ed33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitName: Mario
-  damage: 5
+  unitName: Enemy
+  damage: 10
   maxHP: 30
-  currentHP: 20
+  currentHP: 30
   currentHand: Unknown
 --- !u!1 &5492376629917588543
 GameObject:
