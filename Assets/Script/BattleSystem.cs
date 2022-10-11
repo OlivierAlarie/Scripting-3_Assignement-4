@@ -25,11 +25,12 @@ public class BattleSystem : MonoBehaviour
 	public BattleState state;
 
 	public HandManager HandManager;
+	private bool _playerHandChosen = false;
 
 	[Header("Player Sprites Variables")]
-	[SerializeField] private float _playerDamagedTimeDelay = 2f;
-	[SerializeField] private float _playerDamagedFlashDelay = 0.1f;
-	[SerializeField] private bool _playerIsDamaged = false;
+	private float _playerDamagedTimeDelay = 2f;
+	private float _playerDamagedFlashDelay = 0.1f;
+	private bool _playerIsDamaged = false;
 	[SerializeField] private SpriteRenderer _playerSpriteRenderer;
 	[SerializeField] private GameObject _playerRockSprite;
 	[SerializeField] private GameObject _playerPaperSprite;
@@ -127,6 +128,7 @@ public class BattleSystem : MonoBehaviour
 	void PlayerTurn()
 	{
 		dialogueText.text = "Choose an action:";
+		_playerHandChosen = false;
 		_playerRockSprite.SetActive(false);
 		_playerPaperSprite.SetActive(false);
 		_playerScissorsSprite.SetActive(false);
@@ -156,11 +158,12 @@ public class BattleSystem : MonoBehaviour
 
 	public void RockButton()
 	{
-		if (state != BattleState.PLAYERTURN)
+		if (state != BattleState.PLAYERTURN || _playerHandChosen)
 			return;
 
 		HandManager.PlayHand("Rock");
 		dialogueText.text = "You have chosen rock";
+		_playerHandChosen = true;
 		_playerRockSprite.SetActive(true);
 		_playerPaperSprite.SetActive(false);
 		_playerScissorsSprite.SetActive(false);
@@ -170,11 +173,12 @@ public class BattleSystem : MonoBehaviour
 
 	public void PaperButton()
 	{
-		if (state != BattleState.PLAYERTURN)
+		if (state != BattleState.PLAYERTURN || _playerHandChosen)
 			return;
 
 		HandManager.PlayHand("Paper");
 		dialogueText.text = "You have chosen paper";
+		_playerHandChosen = true;
 		_playerRockSprite.SetActive(false);
 		_playerPaperSprite.SetActive(true);
 		_playerScissorsSprite.SetActive(false);
@@ -184,11 +188,12 @@ public class BattleSystem : MonoBehaviour
 
 	public void ScissorsButton()
 	{
-		if (state != BattleState.PLAYERTURN)
+		if (state != BattleState.PLAYERTURN || _playerHandChosen)
 			return;
 
 		HandManager.PlayHand("Scissors");
 		dialogueText.text = "You have chosen scissors";
+		_playerHandChosen = true;
 		_playerRockSprite.SetActive(false);
 		_playerPaperSprite.SetActive(false);
 		_playerScissorsSprite.SetActive(true);
