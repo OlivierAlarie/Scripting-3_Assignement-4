@@ -706,6 +706,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 398702957}
   m_CullTransparentMesh: 0
+--- !u!1 &433245944 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2527944256143782793, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
+    type: 3}
+  m_PrefabInstance: {fileID: 7673866279970117243}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -2410,6 +2416,7 @@ MonoBehaviour:
   enemyHUD: {fileID: 978546682}
   state: 0
   HandManager: {fileID: 1697365168}
+  _PlayerButtons: {fileID: 433245944}
   _playerSpriteRenderer: {fileID: 776899474}
   _playerRockSprite: {fileID: 2055544231}
   _playerPaperSprite: {fileID: 2140993063}
@@ -3264,6 +3271,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -156.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2527944256143782793, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2990626814785333755, guid: 9f17f9fa03cbf4c46bd134bf2e4f130c,
         type: 3}
