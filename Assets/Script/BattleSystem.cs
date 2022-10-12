@@ -43,6 +43,8 @@ public class BattleSystem : MonoBehaviour
 		HandManager = GetComponentInChildren<HandManager>(true);
 		state = BattleState.START;
 		StartCoroutine(SetupBattle());
+		//Toolbox.GetInstance().StatsManager();
+		
     }
 
 	IEnumerator SetupBattle()

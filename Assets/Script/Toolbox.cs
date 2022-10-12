@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class Toolbox : MonoBehaviour
 {
     private static Toolbox _instance;
+    public StatsManager StatsManager;
 
     public static Toolbox GetInstance()
     {
@@ -18,57 +19,18 @@ public class Toolbox : MonoBehaviour
         return _instance;
     }
 
-    public void Unload()
+    private void Awake() 
     {
-        SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetActiveScene());
-    }
-
-    //Level Manager
-    private LevelManager _levelManager;
-    public LevelManager GetLevelManager()
-    {
-        return _levelManager;
-    }
-
-    //UI Manager
-    private UIManager _UIManager;
-    public UIManager GetUIManager()
-    {
-        return _UIManager;
-    }
-
-    private void Awake()
-    {
-        if (_instance != null)
+        if (StatsManager == null)
         {
-            Debug.LogError("Trying to instantiate a second instance of Toolbox");
-            Destroy(gameObject);
-        }
-        else
-        {
-            if (_levelManager == null)
+            StatsManager = FindObjectOfType<StatsManager>();
+
+            if (StatsManager == null)
             {
-
-                _levelManager = FindObjectOfType<LevelManager>();
-                if (_levelManager == null)
-                {
-                    GameObject go = new GameObject("LevelManager");
-                    go.transform.parent = transform;
-                    _levelManager = go.AddComponent<LevelManager>();
-                }
+            GameObject go = new GameObject("StatsManager");
+            StatsManager = go.AddComponent<StatsManager>();
+            DontDestroyOnLoad(go);
             }
-
-            if (_UIManager == null)
-            {
-                _UIManager = FindObjectOfType<UIManager>();
-                if (_UIManager == null)
-                {
-                    GameObject go = Instantiate(Resources.Load("Prefabs/UI") as GameObject);
-                    go.transform.parent = transform;
-                    _UIManager = go.GetComponent<UIManager>();
-                }
-            }
-
         }
     }
 }
