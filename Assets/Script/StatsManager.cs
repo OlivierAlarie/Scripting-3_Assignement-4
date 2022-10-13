@@ -84,4 +84,14 @@ public class StatsManager : MonoBehaviour
         _roundCountTMP.text = ("Round: " + RoundCounter);
     }
 
+    public void ResetGameText()
+    {
+        RoundCounter = 0;
+        _roundCountTMP.text = ("Round: " + RoundCounter);
+        RetryCounter = 0;
+        _retryCountTMP.text = ("Retry: " + RetryCounter);
+        Timer = 0f;
+        TimeApprox = 0;
+        _timerTMP.text = ("Timer: " + TimeApprox.ToString());
+    }
 }

@@ -603,7 +603,7 @@ GameObject:
   - component: {fileID: 7880631416640787581}
   - component: {fileID: 7880631416640787582}
   m_Layer: 0
-  m_Name: Return_Button
+  m_Name: Retry_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -693,7 +693,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7880631417681893400}
         m_TargetAssemblyTypeName: EndScreenManager, Assembly-CSharp
-        m_MethodName: ReturnButton
+        m_MethodName: RetryButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
