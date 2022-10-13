@@ -259,6 +259,10 @@ public class BattleSystem : MonoBehaviour
         enemyHUD.SetHP(enemyUnit.CurrentHP);
         DialogueText.text = _playerUnit.UnitName + " has won this round!";
 
+        _playerIsDamaged = true;
+        StartCoroutine(PlayerDamagedFlash(_enemyBaseSprtRndrr));
+        StartCoroutine(HandlePlayerDamagedDelay());
+
         yield return new WaitForSeconds(1f);
 
         if (isDead)
@@ -284,7 +288,7 @@ public class BattleSystem : MonoBehaviour
         playerHUD.SetHP(_playerUnit.CurrentHP);
 
         _playerIsDamaged = true;
-        StartCoroutine(PlayerDamagedFlash());
+        StartCoroutine(PlayerDamagedFlash(_playerBaseSprtRndrr));
         StartCoroutine(HandlePlayerDamagedDelay());
 
         yield return new WaitForSeconds(1f);
@@ -314,13 +318,13 @@ public class BattleSystem : MonoBehaviour
 
     #region Display Utility
 
-    public IEnumerator PlayerDamagedFlash() //IEnumerator is useful to add delays
+    public IEnumerator PlayerDamagedFlash(SpriteRenderer baseSprite) //IEnumerator is useful to add delays
     {
         while (_playerIsDamaged)
         {
-            _playerBaseSprtRndrr.color = new Color(1f, 1f, 1f, 0f); //Flashing animation from max opacity to none (r,g,b,a)
+            baseSprite.color = new Color(1f, 1f, 1f, 0f); //Flashing animation from max opacity to none (r,g,b,a)
             yield return new WaitForSeconds(_playerDamagedFlashDelay);
-            _playerBaseSprtRndrr.color = new Color(1f, 1f, 1f, 1f);
+            baseSprite.color = new Color(1f, 1f, 1f, 1f);
             yield return new WaitForSeconds(_playerDamagedFlashDelay);
         }
     }
