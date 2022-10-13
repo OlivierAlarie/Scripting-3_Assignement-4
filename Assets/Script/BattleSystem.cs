@@ -68,70 +68,6 @@ public class BattleSystem : MonoBehaviour
 
     #endregion
 
-    #region Attacks
-
-    IEnumerator PlayerAttack()
-    {
-        bool isDead = enemyUnit.TakeDamage(_playerUnit.Damage);
-
-        yield return new WaitForSeconds(1f);
-
-        enemyHUD.SetHP(enemyUnit.CurrentHP);
-        DialogueText.text = _playerUnit.UnitName + " has won this round!";
-
-        yield return new WaitForSeconds(1f);
-
-        if (isDead)
-        {
-            State = BattleState.WON;
-            EndBattle();
-        }
-        else
-        {
-            State = BattleState.PLAYERTURN;
-            PlayerTurn();
-        }
-    }
-
-    IEnumerator EnemyAttack()
-    {
-        DialogueText.text = enemyUnit.UnitName + " has won this round...";
-
-        yield return new WaitForSeconds(1f);
-
-        bool isDead = _playerUnit.TakeDamage(enemyUnit.Damage);
-
-        playerHUD.SetHP(_playerUnit.CurrentHP);
-
-        _playerIsDamaged = true;
-        StartCoroutine(PlayerDamagedFlash());
-        StartCoroutine(HandlePlayerDamagedDelay());
-
-        yield return new WaitForSeconds(1f);
-
-        if (isDead)
-        {
-            State = BattleState.LOST;
-            EndBattle();
-        }
-        else
-        {
-            State = BattleState.PLAYERTURN;
-            PlayerTurn();
-        }
-    }
-
-    IEnumerator Tiebreaker()
-    {
-        DialogueText.text = "Tiebreaker! Let's continue!";
-
-        yield return new WaitForSeconds(1f);
-        State = BattleState.PLAYERTURN;
-        PlayerTurn();
-    }
-
-    #endregion
-
     #region Turns
 
     void PlayerTurn()
@@ -168,7 +104,7 @@ public class BattleSystem : MonoBehaviour
         {
             enemyUnit.CurrentHand = "Scissors";
             HandManager.PlayHand("Scissors");
-            
+
             _enemyHandImg.sprite = HandsSprites[3];
         }
 
@@ -302,7 +238,71 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(EnemyTurn());
     }
 
-    #endregion 
+    #endregion
+
+    #region Attacks
+
+    IEnumerator PlayerAttack()
+    {
+        bool isDead = enemyUnit.TakeDamage(_playerUnit.Damage);
+
+        yield return new WaitForSeconds(1f);
+
+        enemyHUD.SetHP(enemyUnit.CurrentHP);
+        DialogueText.text = _playerUnit.UnitName + " has won this round!";
+
+        yield return new WaitForSeconds(1f);
+
+        if (isDead)
+        {
+            State = BattleState.WON;
+            EndBattle();
+        }
+        else
+        {
+            State = BattleState.PLAYERTURN;
+            PlayerTurn();
+        }
+    }
+
+    IEnumerator EnemyAttack()
+    {
+        DialogueText.text = enemyUnit.UnitName + " has won this round...";
+
+        yield return new WaitForSeconds(1f);
+
+        bool isDead = _playerUnit.TakeDamage(enemyUnit.Damage);
+
+        playerHUD.SetHP(_playerUnit.CurrentHP);
+
+        _playerIsDamaged = true;
+        StartCoroutine(PlayerDamagedFlash());
+        StartCoroutine(HandlePlayerDamagedDelay());
+
+        yield return new WaitForSeconds(1f);
+
+        if (isDead)
+        {
+            State = BattleState.LOST;
+            EndBattle();
+        }
+        else
+        {
+            State = BattleState.PLAYERTURN;
+            PlayerTurn();
+        }
+    }
+
+    IEnumerator Tiebreaker()
+    {
+        DialogueText.text = "Tiebreaker! Let's continue!";
+
+        yield return new WaitForSeconds(1f);
+        State = BattleState.PLAYERTURN;
+        PlayerTurn();
+    }
+
+    #endregion
 
     #region Display Utility
 
