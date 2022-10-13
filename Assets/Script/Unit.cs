@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-	public string unitName;
-	public int damage;
-	public int maxHP;
-	public int currentHP;
-	public string currentHand;
+	public string UnitName;
+	public int Damage;
+	public int MaxHP;
+	public int CurrentHP;
+	public string CurrentHand;
 
 	public bool TakeDamage(int dmg)
 	{
-		currentHP -= dmg;
+		CurrentHP -= dmg;
 
-		if (currentHP <= 0)
+		if (CurrentHP <= 0)
 			return true;
 		else
 			return false;
@@ -22,23 +22,23 @@ public class Unit : MonoBehaviour
 
 	public void Heal(int amount)
 	{
-		currentHP += amount;
-		if (currentHP > maxHP)
-			currentHP = maxHP;
+		CurrentHP += amount;
+		if (CurrentHP > MaxHP)
+			CurrentHP = MaxHP;
 	}
 
 	public void HandChosen(string hand)
 	{
 		if (hand == "rock")
 		{
-			currentHand = "Rock";
+			CurrentHand = "Rock";
 		}
 		
 		else if (hand == "paper")
 		{
-			currentHand = "Paper";
+			CurrentHand = "Paper";
 		}
 
-		else {currentHand = "Scissors";}
+		else {CurrentHand = "Scissors";}
 	}
 }

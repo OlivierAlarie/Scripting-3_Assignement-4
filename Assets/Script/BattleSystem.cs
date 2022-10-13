@@ -55,7 +55,7 @@ public class BattleSystem : MonoBehaviour
 		GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
 		enemyUnit = enemyGO.GetComponent<Unit>();
 
-		dialogueText.text = enemyUnit.unitName + " is ready!";
+		dialogueText.text = enemyUnit.UnitName + " is ready!";
 
 		playerHUD.SetHUD(playerUnit);
 		enemyHUD.SetHUD(enemyUnit);
@@ -70,12 +70,12 @@ public class BattleSystem : MonoBehaviour
 
 	IEnumerator PlayerAttack()
 	{
-		bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
+		bool isDead = enemyUnit.TakeDamage(playerUnit.Damage);
 
 		yield return new WaitForSeconds(1f);
 
-		enemyHUD.SetHP(enemyUnit.currentHP);
-		dialogueText.text = playerUnit.unitName + " has won this round!";
+		enemyHUD.SetHP(enemyUnit.CurrentHP);
+		dialogueText.text = playerUnit.UnitName + " has won this round!";
 
 		yield return new WaitForSeconds(1f);
 
@@ -92,13 +92,13 @@ public class BattleSystem : MonoBehaviour
 
 	IEnumerator EnemyAttack()
 	{
-		dialogueText.text = enemyUnit.unitName + " has won this round...";
+		dialogueText.text = enemyUnit.UnitName + " has won this round...";
 
 		yield return new WaitForSeconds(1f);
 
-		bool isDead = playerUnit.TakeDamage(enemyUnit.damage);
+		bool isDead = playerUnit.TakeDamage(enemyUnit.Damage);
 
-		playerHUD.SetHP(playerUnit.currentHP);
+		playerHUD.SetHP(playerUnit.CurrentHP);
 
 		_playerIsDamaged = true;
 		StartCoroutine(PlayerDamagedFlash());
@@ -132,7 +132,7 @@ public class BattleSystem : MonoBehaviour
 
 		if (enemyChoice == "Rock")
 		{
-			enemyUnit.currentHand = "Rock";
+			enemyUnit.CurrentHand = "Rock";
 			HandManager.PlayHand("Rock");
 			_enemyRockSprite.SetActive(true);
 			_enemyPaperSprite.SetActive(false);
@@ -142,7 +142,7 @@ public class BattleSystem : MonoBehaviour
 
 		else if (enemyChoice == "Paper")
 		{
-			enemyUnit.currentHand = "Paper";
+			enemyUnit.CurrentHand = "Paper";
 			HandManager.PlayHand("Paper");
 			_enemyRockSprite.SetActive(false);
 			_enemyPaperSprite.SetActive(true);
@@ -152,7 +152,7 @@ public class BattleSystem : MonoBehaviour
 
 		else if (enemyChoice == "Scissors")
 		{
-			enemyUnit.currentHand = "Scissors";
+			enemyUnit.CurrentHand = "Scissors";
 			HandManager.PlayHand("Scissors");
 			_enemyRockSprite.SetActive(false);
 			_enemyPaperSprite.SetActive(false);
@@ -170,32 +170,32 @@ public class BattleSystem : MonoBehaviour
 	{
 		yield return new WaitForSeconds(1f);
 
-		if (playerUnit.currentHand == "Rock" && enemyUnit.currentHand == "Scissors")
+		if (playerUnit.CurrentHand == "Rock" && enemyUnit.CurrentHand == "Scissors")
 		{
 			StartCoroutine(PlayerAttack());
 		}
 
-		else if (playerUnit.currentHand == "Paper" && enemyUnit.currentHand == "Rock")
+		else if (playerUnit.CurrentHand == "Paper" && enemyUnit.CurrentHand == "Rock")
 		{
 			StartCoroutine(PlayerAttack());
 		}
 
-		else if (playerUnit.currentHand == "Scissors" && enemyUnit.currentHand == "Paper")
+		else if (playerUnit.CurrentHand == "Scissors" && enemyUnit.CurrentHand == "Paper")
 		{
 			StartCoroutine(PlayerAttack());
 		}
 
-		else if (playerUnit.currentHand == "Rock" && enemyUnit.currentHand == "Paper")
+		else if (playerUnit.CurrentHand == "Rock" && enemyUnit.CurrentHand == "Paper")
 		{
 			StartCoroutine(EnemyAttack());
 		}
 
-		else if (playerUnit.currentHand == "Paper" && enemyUnit.currentHand == "Scissors")
+		else if (playerUnit.CurrentHand == "Paper" && enemyUnit.CurrentHand == "Scissors")
 		{
 			StartCoroutine(EnemyAttack());
 		}
 
-		else if (playerUnit.currentHand == "Scissors" && enemyUnit.currentHand == "Rock")
+		else if (playerUnit.CurrentHand == "Scissors" && enemyUnit.CurrentHand == "Rock")
 		{
 			StartCoroutine(EnemyAttack());
 		}
@@ -222,8 +222,8 @@ public class BattleSystem : MonoBehaviour
 	void PlayerTurn()
 	{
 		dialogueText.text = "Choose an action:";
-		playerUnit.currentHand = "Unknown";
-		enemyUnit.currentHand = "Unknown";
+		playerUnit.CurrentHand = "Unknown";
+		enemyUnit.CurrentHand = "Unknown";
 		_playerRockSprite.SetActive(false);
 		_playerPaperSprite.SetActive(false);
 		_playerScissorsSprite.SetActive(false);
@@ -243,14 +243,14 @@ public class BattleSystem : MonoBehaviour
 
 	public void RockButton()
 	{
-		if (state != BattleState.PLAYERTURN && playerUnit.currentHand != "Unknown")
+		if (state != BattleState.PLAYERTURN && playerUnit.CurrentHand != "Unknown")
 		{
 			return;
 		}
 
 		HandManager.PlayHand("Rock");
 		dialogueText.text = "You have chosen rock";
-		playerUnit.currentHand = "Rock";
+		playerUnit.CurrentHand = "Rock";
 		_playerRockSprite.SetActive(true);
 		_playerPaperSprite.SetActive(false);
 		_playerScissorsSprite.SetActive(false);
@@ -261,14 +261,14 @@ public class BattleSystem : MonoBehaviour
 
 	public void PaperButton()
 	{
-		if (state != BattleState.PLAYERTURN && playerUnit.currentHand != "Unknown")
+		if (state != BattleState.PLAYERTURN && playerUnit.CurrentHand != "Unknown")
 		{
 			return;
 		}
 
 		HandManager.PlayHand("Paper");
 		dialogueText.text = "You have chosen paper";
-		playerUnit.currentHand = "Paper";
+		playerUnit.CurrentHand = "Paper";
 		_playerRockSprite.SetActive(false);
 		_playerPaperSprite.SetActive(true);
 		_playerScissorsSprite.SetActive(false);
@@ -279,14 +279,14 @@ public class BattleSystem : MonoBehaviour
 
 	public void ScissorsButton()
 	{
-		if (state != BattleState.PLAYERTURN && playerUnit.currentHand != "Unknown")
+		if (state != BattleState.PLAYERTURN && playerUnit.CurrentHand != "Unknown")
 		{
 			return;
 		}
 
 		HandManager.PlayHand("Scissors");
 		dialogueText.text = "You have chosen scissors";
-		playerUnit.currentHand = "Scissors";
+		playerUnit.CurrentHand = "Scissors";
 		_playerRockSprite.SetActive(false);
 		_playerPaperSprite.SetActive(false);
 		_playerScissorsSprite.SetActive(true);
