@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class Toolbox : MonoBehaviour
 {
     private static Toolbox _instance;
-    public StatsManager StatsManager;
 
     public static Toolbox GetInstance()
     {
@@ -18,19 +17,35 @@ public class Toolbox : MonoBehaviour
         }
         return _instance;
     }
+/*
+    private StatsManager _statsManager;
+
+    public StatsManager GetStatsManager()
+    {
+        return _statsManager;
+    }
 
     private void Awake() 
     {
-        if (StatsManager == null)
+        if (_instance != null)
         {
-            StatsManager = FindObjectOfType<StatsManager>();
-
-            if (StatsManager == null)
+            Debug.LogError("Trying to instantiate a second instance of Toolbox");
+            Destroy(gameObject);
+        }        
+        else
+        {
+            if (_statsManager == null)
             {
-            GameObject go = new GameObject("StatsManager");
-            StatsManager = go.AddComponent<StatsManager>();
-            DontDestroyOnLoad(go);
-            }
+                _statsManager = FindObjectOfType<StatsManager>();
+                if (_statsManager == null)
+                {
+                    //GameObject go = new GameObject("StatsManager");
+                    GameObject go = Instantiate(Resources.Load("Prefabs/UI") as GameObject);
+                    go.transform.parent = transform;
+                    _statsManager = go.AddComponent<StatsManager>();
+                    //DontDestroyOnLoad(go);
+                }
+            }           
         }
-    }
+    }*/
 }

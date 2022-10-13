@@ -1813,18 +1813,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 5599517326349623613}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59a616d721a6d8140bc505ba2f93183a, type: 3}
+  m_Script: {fileID: 11500000, guid: d40a7b2a01814f546944526328ded183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _finishOverlay: {fileID: 5599517327025898842}
-  _retryOverlay: {fileID: 7674940026680472701}
-  _pauseOverlay: {fileID: 5680725914586388329}
-  _hud: {fileID: 2512087712283969849}
-  timerTMP: {fileID: 5670229051063144107}
-  scoreTMP: {fileID: 0}
-  totalTimerTMP: {fileID: 6767301297798910992}
-  totalScoreTMP: {fileID: 0}
-  totalRetriesTMP: {fileID: 4774699665566766249}
 --- !u!1 &5599517327025898842
 GameObject:
   m_ObjectHideFlags: 0
