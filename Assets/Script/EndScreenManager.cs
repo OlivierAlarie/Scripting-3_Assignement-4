@@ -12,6 +12,8 @@ public class EndScreenManager : MonoBehaviour
 
     public void ReturnButton() 
     {
+        StatsManager.Instance.IncreaseRetryText();
+        StatsManager.Instance.ResetRoundText();
         SceneManager.LoadScene(0);
         StatsManager.Instance.Timer = 0f;
     }

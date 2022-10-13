@@ -13,6 +13,8 @@ public class StatsManager : MonoBehaviour
     [Header("HUD Variables")]
     public int RetryCounter;
     [SerializeField] private TextMeshProUGUI _retryCountTMP;
+    public int RoundCounter;
+    [SerializeField] private TextMeshProUGUI _roundCountTMP;
 
     [Header("Turn Stage Variables")]
     public string TurnStage;
@@ -23,57 +25,63 @@ public class StatsManager : MonoBehaviour
 
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(this);
-        }   
-        else 
+        }
+        else
         {
             Destroy(gameObject);
         }
     }
 
-    private void Update() 
-    {
-        Scene currentScene = SceneManager.GetActiveScene();
-
-        string sceneName = currentScene.name;
-
-        if (sceneName == "Combat")
-        {
-            IsPlaying = true;
-            StatsUpdate();
-        }
-        else if (sceneName == "End")
-        {
-            IsPlaying = false;
-            StatsUpdate();
-        }
-        else
-        {
-            IsPlaying = false;
-            _retryCountTMP.text = ("");
-            _turnStageTMP.text = ("");
-            _timerTMP.text = ("");
-        }
-        
-        TimeCounter();
-    }
-    
-    public void TimeCounter()
+    private void Update()
     {
         if (IsPlaying)
         {
-            Timer += Time.deltaTime;
-            TimeApprox = (int)Timer;
+            TimeCounter();
         }
     }
 
-    public void StatsUpdate()
+    public void TimeCounter()
     {
-        _retryCountTMP.text = ("Retry: " + RetryCounter.ToString());
-        _turnStageTMP.text = ("Turn: " + BattleState.ENEMYTURN.ToString());
+        Timer += Time.deltaTime;
+        TimeApprox = (int)Timer;
+        SetTimerText();
+    }
+
+    public void SetPlaying(bool value)
+    {
+        IsPlaying = value;
+    }
+
+    public void SetTimerText()
+    {
         _timerTMP.text = ("Timer: " + TimeApprox.ToString());
     }
+
+    public void SetStageText(string stage)
+    {
+        _turnStageTMP.text = ("Turn: " + stage);
+    }
+
+    public void IncreaseRetryText()
+    {
+        RetryCounter++;
+        _retryCountTMP.text = ("Retry: " + RetryCounter);
+    }
+
+    public void IncreaseRoundText()
+    {
+        RoundCounter++;
+        _roundCountTMP.text = ("Round: " + RoundCounter);
+    }
+
+    public void ResetRoundText()
+    {
+        RoundCounter = 0;
+        _roundCountTMP.text = ("Round: " + RoundCounter);
+    }
+
 }

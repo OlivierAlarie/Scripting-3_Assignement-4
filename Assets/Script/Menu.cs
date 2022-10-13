@@ -13,6 +13,7 @@ public class Menu : MonoBehaviour
 
     public void StartButton() 
     {
+        StatsManager.Instance.SetPlaying(true);
         SceneManager.LoadScene(1);
     }
 

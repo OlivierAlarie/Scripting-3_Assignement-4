@@ -41,7 +41,9 @@ public class BattleSystem : MonoBehaviour
     void Start()
     {
         HandManager = GetComponentInChildren<HandManager>(true);
-        State = BattleState.START;
+
+        ChangeTurnStage(BattleState.START);
+
         StartCoroutine(SetupBattle());
         //Toolbox.GetInstance().StatsManager();
     }
@@ -62,7 +64,8 @@ public class BattleSystem : MonoBehaviour
 
         _PlayerButtons.SetActive(true);
 
-        State = BattleState.PLAYERTURN;
+        ChangeTurnStage(BattleState.PLAYERTURN);
+
         PlayerTurn();
     }
 
@@ -78,6 +81,8 @@ public class BattleSystem : MonoBehaviour
 
         _playerHandImg.sprite = HandsSprites[0];
         _enemyHandImg.sprite = HandsSprites[0];
+
+        StatsManager.Instance.IncreaseRoundText();
     }
 
     IEnumerator EnemyTurn()
@@ -110,7 +115,8 @@ public class BattleSystem : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        State = BattleState.BATTLEPHASE;
+        ChangeTurnStage(BattleState.BATTLEPHASE);
+
         StartCoroutine(ResultTurn());
     }
 
@@ -168,6 +174,7 @@ public class BattleSystem : MonoBehaviour
 
     void EndBattle()
     {
+        StatsManager.Instance.SetPlaying(false);
         if (State == BattleState.WON)
         {
             DialogueText.text = "You won the battle!";
@@ -176,6 +183,7 @@ public class BattleSystem : MonoBehaviour
         else if (State == BattleState.LOST)
         {
             DialogueText.text = "You were defeated.";
+            SceneManager.LoadScene("End");
         }
     }
 
@@ -233,7 +241,7 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator PlayerHand()
     {
-        State = BattleState.ENEMYTURN;
+        ChangeTurnStage(BattleState.ENEMYTURN);
         yield return new WaitForSeconds(1f);
         StartCoroutine(EnemyTurn());
     }
@@ -255,12 +263,12 @@ public class BattleSystem : MonoBehaviour
 
         if (isDead)
         {
-            State = BattleState.WON;
+            ChangeTurnStage(BattleState.WON);
             EndBattle();
         }
         else
         {
-            State = BattleState.PLAYERTURN;
+            ChangeTurnStage(BattleState.PLAYERTURN);
             PlayerTurn();
         }
     }
@@ -283,12 +291,12 @@ public class BattleSystem : MonoBehaviour
 
         if (isDead)
         {
-            State = BattleState.LOST;
+            ChangeTurnStage(BattleState.LOST);
             EndBattle();
         }
         else
         {
-            State = BattleState.PLAYERTURN;
+            ChangeTurnStage(BattleState.PLAYERTURN);
             PlayerTurn();
         }
     }
@@ -298,7 +306,7 @@ public class BattleSystem : MonoBehaviour
         DialogueText.text = "Tiebreaker! Let's continue!";
 
         yield return new WaitForSeconds(1f);
-        State = BattleState.PLAYERTURN;
+        ChangeTurnStage(BattleState.PLAYERTURN);
         PlayerTurn();
     }
 
@@ -321,6 +329,12 @@ public class BattleSystem : MonoBehaviour
     {
         yield return new WaitForSeconds(_playerDamagedTimeDelay);
         _playerIsDamaged = false;
+    }
+
+    public void ChangeTurnStage(BattleState newState)
+    {
+        State = newState;
+        StatsManager.Instance.SetStageText(State.ToString());
     }
 
     #endregion
