@@ -34,21 +34,7 @@ public class StatsManager : MonoBehaviour
         }
     }
 
-    public void TimeCounter()
-    {
-        if (IsPlaying)
-        {
-            Timer += Time.deltaTime;
-            TimeApprox = (int)Timer;
-        }
-    }
-
-    public void StatsUpdate()
-    {
-        _retryCountTMP.text = ("Retry: " + RetryCounter.ToString());
-        _turnStageTMP.text = ("Turn: " + BattleState.ENEMYTURN.ToString());
-        _timerTMP.text = ("Timer: " + TimeApprox.ToString());
-    }
+    
 
     private void Update() 
     {
@@ -75,5 +61,21 @@ public class StatsManager : MonoBehaviour
         }
         
         TimeCounter();
+    }
+    
+    public void TimeCounter()
+    {
+        if (IsPlaying)
+        {
+            Timer += Time.deltaTime;
+            TimeApprox = (int)Timer;
+        }
+    }
+
+    public void StatsUpdate()
+    {
+        _retryCountTMP.text = ("Retry: " + RetryCounter.ToString());
+        _turnStageTMP.text = ("Turn: " + BattleState.ENEMYTURN.ToString());
+        _timerTMP.text = ("Timer: " + TimeApprox.ToString());
     }
 }
