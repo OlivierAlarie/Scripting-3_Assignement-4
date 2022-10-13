@@ -183,7 +183,7 @@ public class BattleSystem : MonoBehaviour
         else if (State == BattleState.LOST)
         {
             DialogueText.text = "You were defeated.";
-            SceneManager.LoadScene("End");
+            SceneManager.LoadScene("BadEnd");
         }
     }
 
