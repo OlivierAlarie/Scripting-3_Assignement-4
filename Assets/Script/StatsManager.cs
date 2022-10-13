@@ -6,7 +6,7 @@ public class StatsManager : MonoBehaviour
 {
     [Header("Time Variables")]
     public float Timer;
-    public float TimeApprox;
+    public int TimeApprox;
     public bool IsPlaying = false;
     [SerializeField] private TextMeshProUGUI _timerTMP;
 
@@ -33,8 +33,6 @@ public class StatsManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-    
 
     private void Update() 
     {
