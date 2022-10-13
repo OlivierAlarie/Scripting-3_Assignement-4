@@ -8,296 +8,327 @@ public enum BattleState { START, PLAYERTURN, ENEMYTURN, BATTLEPHASE, WON, LOST }
 
 public class BattleSystem : MonoBehaviour
 {
-	public GameObject playerPrefab;
-	public GameObject enemyPrefab;
-	public Transform playerBattleStation;
-	public Transform enemyBattleStation;
-	Unit playerUnit;
-	Unit enemyUnit;
-	public Text dialogueText;
-	public BattleHUD playerHUD;
-	public BattleHUD enemyHUD;
-	public BattleState state;
-	public HandManager HandManager;
+    public GameObject playerPrefab;
+    public GameObject enemyPrefab;
+    public Transform playerBattleStation;
+    public Transform enemyBattleStation;
+    Unit playerUnit;
+    Unit enemyUnit;
+    public Text dialogueText;
+    public BattleHUD playerHUD;
+    public BattleHUD enemyHUD;
+    public BattleState state;
+    public HandManager HandManager;
 
-	[Header("Player Variables")]
-	[SerializeField] private GameObject _PlayerButtons;
-	private float _playerDamagedTimeDelay = 1f;
-	private float _playerDamagedFlashDelay = 0.1f;
-	private bool _playerIsDamaged = false;
-	[SerializeField] private SpriteRenderer _playerSpriteRenderer;
-	[SerializeField] private GameObject _playerRockSprite;
-	[SerializeField] private GameObject _playerPaperSprite;
-	[SerializeField] private GameObject _playerScissorsSprite;
-	[SerializeField] private GameObject _playerUnknownSprite;
+    [Header("Player Variables")]
+    [SerializeField] private GameObject _PlayerButtons;
+    private float _playerDamagedTimeDelay = 1f;
+    private float _playerDamagedFlashDelay = 0.1f;
+    private bool _playerIsDamaged = false;
+    [SerializeField] private SpriteRenderer _playerSpriteRenderer;
+    [SerializeField] private GameObject _playerRockSprite;
+    [SerializeField] private GameObject _playerPaperSprite;
+    [SerializeField] private GameObject _playerScissorsSprite;
+    [SerializeField] private GameObject _playerUnknownSprite;
 
-	[Header("Enemy Variables")]
-	public string[] Choices;
-	[SerializeField] private SpriteRenderer _enemySpriteRenderer;
-	[SerializeField] private GameObject _enemyRockSprite;
-	[SerializeField] private GameObject _enemyPaperSprite;
-	[SerializeField] private GameObject _enemyScissorsSprite;
-	[SerializeField] private GameObject _enemyUnknownSprite;
+    [Header("Enemy Variables")]
+    public string[] Choices;
+    [SerializeField] private SpriteRenderer _enemySpriteRenderer;
+    [SerializeField] private GameObject _enemyRockSprite;
+    [SerializeField] private GameObject _enemyPaperSprite;
+    [SerializeField] private GameObject _enemyScissorsSprite;
+    [SerializeField] private GameObject _enemyUnknownSprite;
+
+    #region Set Up
 
     void Start()
     {
-		HandManager = GetComponentInChildren<HandManager>(true);
-		state = BattleState.START;
-		StartCoroutine(SetupBattle());
-		//Toolbox.GetInstance().StatsManager();
+        HandManager = GetComponentInChildren<HandManager>(true);
+        state = BattleState.START;
+        StartCoroutine(SetupBattle());
+        //Toolbox.GetInstance().StatsManager();
     }
 
-	IEnumerator SetupBattle()
-	{
-		GameObject playerGO = Instantiate(playerPrefab, playerBattleStation);
-		playerUnit = playerGO.GetComponent<Unit>();
+    IEnumerator SetupBattle()
+    {
+        GameObject playerGO = Instantiate(playerPrefab, playerBattleStation);
+        playerUnit = playerGO.GetComponent<Unit>();
 
-		GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
-		enemyUnit = enemyGO.GetComponent<Unit>();
+        GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
+        enemyUnit = enemyGO.GetComponent<Unit>();
 
-		dialogueText.text = enemyUnit.UnitName + " is ready!";
+        dialogueText.text = enemyUnit.UnitName + " is ready!";
 
-		playerHUD.SetHUD(playerUnit);
-		enemyHUD.SetHUD(enemyUnit);
+        yield return new WaitForSeconds(1f);
 
-		yield return new WaitForSeconds(2f);
+        Debug.Log("SetHUD of Player");
+        playerHUD.SetHUD(playerUnit);
 
-		_PlayerButtons.SetActive(true);
+        Debug.Log("SetHUD of Enemy");
+        Debug.Log(enemyUnit);
 
-		state = BattleState.PLAYERTURN;
-		PlayerTurn();
-	}
+        enemyHUD.SetHUD(enemyUnit);
 
-	IEnumerator PlayerAttack()
-	{
-		bool isDead = enemyUnit.TakeDamage(playerUnit.Damage);
+        Debug.Log("Wait");
+        yield return new WaitForSeconds(2f);
 
-		yield return new WaitForSeconds(1f);
+        _PlayerButtons.SetActive(true);
 
-		enemyHUD.SetHP(enemyUnit.CurrentHP);
-		dialogueText.text = playerUnit.UnitName + " has won this round!";
+        state = BattleState.PLAYERTURN;
+        PlayerTurn();
+    }
 
-		yield return new WaitForSeconds(1f);
+    #endregion
 
-		if(isDead)
-		{
-			state = BattleState.WON;
-			EndBattle();
-		} else
-		{
-			state = BattleState.PLAYERTURN;
-			PlayerTurn();
-		}
-	}
+    #region Attacks
 
-	IEnumerator EnemyAttack()
-	{
-		dialogueText.text = enemyUnit.UnitName + " has won this round...";
+    IEnumerator PlayerAttack()
+    {
+        bool isDead = enemyUnit.TakeDamage(playerUnit.Damage);
 
-		yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1f);
 
-		bool isDead = playerUnit.TakeDamage(enemyUnit.Damage);
+        enemyHUD.SetHP(enemyUnit.CurrentHP);
+        dialogueText.text = playerUnit.UnitName + " has won this round!";
 
-		playerHUD.SetHP(playerUnit.CurrentHP);
+        yield return new WaitForSeconds(1f);
 
-		_playerIsDamaged = true;
-		StartCoroutine(PlayerDamagedFlash());
-		StartCoroutine(HandlePlayerDamagedDelay());
+        if (isDead)
+        {
+            state = BattleState.WON;
+            EndBattle();
+        }
+        else
+        {
+            state = BattleState.PLAYERTURN;
+            PlayerTurn();
+        }
+    }
 
-		yield return new WaitForSeconds(1f);
+    IEnumerator EnemyAttack()
+    {
+        dialogueText.text = enemyUnit.UnitName + " has won this round...";
 
-		if(isDead)
-		{
-			state = BattleState.LOST;
-			EndBattle();
-		} else
-		{
-			state = BattleState.PLAYERTURN;
-			PlayerTurn();
-		}
-	}
+        yield return new WaitForSeconds(1f);
 
-	IEnumerator Tiebreaker()
-	{
-		dialogueText.text = "Tiebreaker! Let's continue!";
+        bool isDead = playerUnit.TakeDamage(enemyUnit.Damage);
 
-		yield return new WaitForSeconds(1f);
-		state = BattleState.PLAYERTURN;
-		PlayerTurn();
-	}
+        playerHUD.SetHP(playerUnit.CurrentHP);
 
-	IEnumerator EnemyTurn()
-	{
-		string enemyChoice = Choices[Random.Range(0, Choices.Length)];
+        _playerIsDamaged = true;
+        StartCoroutine(PlayerDamagedFlash());
+        StartCoroutine(HandlePlayerDamagedDelay());
 
-		if (enemyChoice == "Rock")
-		{
-			enemyUnit.CurrentHand = "Rock";
-			HandManager.PlayHand("Rock");
-			_enemyRockSprite.SetActive(true);
-			_enemyPaperSprite.SetActive(false);
-			_enemyScissorsSprite.SetActive(false);
-			_enemyUnknownSprite.SetActive(false);
-		}
+        yield return new WaitForSeconds(1f);
 
-		else if (enemyChoice == "Paper")
-		{
-			enemyUnit.CurrentHand = "Paper";
-			HandManager.PlayHand("Paper");
-			_enemyRockSprite.SetActive(false);
-			_enemyPaperSprite.SetActive(true);
-			_enemyScissorsSprite.SetActive(false);
-			_enemyUnknownSprite.SetActive(false);
-		}
+        if (isDead)
+        {
+            state = BattleState.LOST;
+            EndBattle();
+        }
+        else
+        {
+            state = BattleState.PLAYERTURN;
+            PlayerTurn();
+        }
+    }
 
-		else if (enemyChoice == "Scissors")
-		{
-			enemyUnit.CurrentHand = "Scissors";
-			HandManager.PlayHand("Scissors");
-			_enemyRockSprite.SetActive(false);
-			_enemyPaperSprite.SetActive(false);
-			_enemyScissorsSprite.SetActive(true);
-			_enemyUnknownSprite.SetActive(false);
-		}
-		
-		yield return new WaitForSeconds(1f);
+    IEnumerator Tiebreaker()
+    {
+        dialogueText.text = "Tiebreaker! Let's continue!";
 
-		state = BattleState.BATTLEPHASE;
-		StartCoroutine(ResultTurn());
-	}
+        yield return new WaitForSeconds(1f);
+        state = BattleState.PLAYERTURN;
+        PlayerTurn();
+    }
 
-	IEnumerator ResultTurn()
-	{
-		yield return new WaitForSeconds(1f);
+    #endregion
 
-		if (playerUnit.CurrentHand == "Rock" && enemyUnit.CurrentHand == "Scissors")
-		{
-			StartCoroutine(PlayerAttack());
-		}
+    #region Turns
 
-		else if (playerUnit.CurrentHand == "Paper" && enemyUnit.CurrentHand == "Rock")
-		{
-			StartCoroutine(PlayerAttack());
-		}
+    void PlayerTurn()
+    {
+        dialogueText.text = "Choose an action:";
+        playerUnit.CurrentHand = "Unknown";
+        enemyUnit.CurrentHand = "Unknown";
+        _playerRockSprite.SetActive(false);
+        _playerPaperSprite.SetActive(false);
+        _playerScissorsSprite.SetActive(false);
+        _playerUnknownSprite.SetActive(true);
+        _enemyRockSprite.SetActive(false);
+        _enemyPaperSprite.SetActive(false);
+        _enemyScissorsSprite.SetActive(false);
+        _enemyUnknownSprite.SetActive(true);
+    }
 
-		else if (playerUnit.CurrentHand == "Scissors" && enemyUnit.CurrentHand == "Paper")
-		{
-			StartCoroutine(PlayerAttack());
-		}
+    IEnumerator EnemyTurn()
+    {
+        string enemyChoice = Choices[Random.Range(0, Choices.Length)];
 
-		else if (playerUnit.CurrentHand == "Rock" && enemyUnit.CurrentHand == "Paper")
-		{
-			StartCoroutine(EnemyAttack());
-		}
+        if (enemyChoice == "Rock")
+        {
+            enemyUnit.CurrentHand = "Rock";
+            HandManager.PlayHand("Rock");
+            _enemyRockSprite.SetActive(true);
+            _enemyPaperSprite.SetActive(false);
+            _enemyScissorsSprite.SetActive(false);
+            _enemyUnknownSprite.SetActive(false);
+        }
 
-		else if (playerUnit.CurrentHand == "Paper" && enemyUnit.CurrentHand == "Scissors")
-		{
-			StartCoroutine(EnemyAttack());
-		}
+        else if (enemyChoice == "Paper")
+        {
+            enemyUnit.CurrentHand = "Paper";
+            HandManager.PlayHand("Paper");
+            _enemyRockSprite.SetActive(false);
+            _enemyPaperSprite.SetActive(true);
+            _enemyScissorsSprite.SetActive(false);
+            _enemyUnknownSprite.SetActive(false);
+        }
 
-		else if (playerUnit.CurrentHand == "Scissors" && enemyUnit.CurrentHand == "Rock")
-		{
-			StartCoroutine(EnemyAttack());
-		}
+        else if (enemyChoice == "Scissors")
+        {
+            enemyUnit.CurrentHand = "Scissors";
+            HandManager.PlayHand("Scissors");
+            _enemyRockSprite.SetActive(false);
+            _enemyPaperSprite.SetActive(false);
+            _enemyScissorsSprite.SetActive(true);
+            _enemyUnknownSprite.SetActive(false);
+        }
 
-		else 
-		{
-			StartCoroutine(Tiebreaker());
-		}
-	}
+        yield return new WaitForSeconds(1f);
 
-	void EndBattle()
-	{
-		if(state == BattleState.WON)
-		{
-			dialogueText.text = "You won the battle!";
-			SceneManager.LoadScene("End");
-		} 
-		else if (state == BattleState.LOST)
-		{
-			dialogueText.text = "You were defeated.";
-		}
-	}
+        state = BattleState.BATTLEPHASE;
+        StartCoroutine(ResultTurn());
+    }
 
-	void PlayerTurn()
-	{
-		dialogueText.text = "Choose an action:";
-		playerUnit.CurrentHand = "Unknown";
-		enemyUnit.CurrentHand = "Unknown";
-		_playerRockSprite.SetActive(false);
-		_playerPaperSprite.SetActive(false);
-		_playerScissorsSprite.SetActive(false);
-		_playerUnknownSprite.SetActive(true);
-		_enemyRockSprite.SetActive(false);
-		_enemyPaperSprite.SetActive(false);
-		_enemyScissorsSprite.SetActive(false);
-		_enemyUnknownSprite.SetActive(true);
-	}
+    IEnumerator ResultTurn()
+    {
+        yield return new WaitForSeconds(1f);
 
-	IEnumerator PlayerHand()
-	{
-		state = BattleState.ENEMYTURN;
-		yield return new WaitForSeconds(1f);
-		StartCoroutine(EnemyTurn());
-	}
+        if (playerUnit.CurrentHand == "Rock")
+        {
+            if (enemyUnit.CurrentHand == "Scissors")
+            {
+                StartCoroutine(PlayerAttack());
+            }
+            else if (enemyUnit.CurrentHand == "Paper")
+            {
+                StartCoroutine(EnemyAttack());
+            }
+        }
+        else if (playerUnit.CurrentHand == "Paper")
+        {
+            if (enemyUnit.CurrentHand == "Rock")
+            {
+                StartCoroutine(PlayerAttack());
 
-	public void RockButton()
-	{
-		if (state != BattleState.PLAYERTURN && playerUnit.CurrentHand != "Unknown")
-		{
-			return;
-		}
+            }
+            else if (enemyUnit.CurrentHand == "Scissors")
+            {
+                StartCoroutine(EnemyAttack());
+            }
+        }
+        else if (playerUnit.CurrentHand == "Scissors")
+        {
+            if (enemyUnit.CurrentHand == "Paper")
+            {
+                StartCoroutine(PlayerAttack());
+            }else if (enemyUnit.CurrentHand == "Rock")
+            {
+                StartCoroutine(EnemyAttack());
+            }
+        }
+        else
+        {
+            StartCoroutine(Tiebreaker());
+        }
+    }
 
-		HandManager.PlayHand("Rock");
-		dialogueText.text = "You have chosen rock";
-		playerUnit.CurrentHand = "Rock";
-		_playerRockSprite.SetActive(true);
-		_playerPaperSprite.SetActive(false);
-		_playerScissorsSprite.SetActive(false);
-		_playerUnknownSprite.SetActive(false);
+    void EndBattle()
+    {
+        if (state == BattleState.WON)
+        {
+            dialogueText.text = "You won the battle!";
+            SceneManager.LoadScene("End");
+        }
+        else if (state == BattleState.LOST)
+        {
+            dialogueText.text = "You were defeated.";
+        }
+    }
 
-		StartCoroutine(PlayerHand());
-	}
+    #endregion
 
-	public void PaperButton()
-	{
-		if (state != BattleState.PLAYERTURN && playerUnit.CurrentHand != "Unknown")
-		{
-			return;
-		}
+    #region Player Choice
 
-		HandManager.PlayHand("Paper");
-		dialogueText.text = "You have chosen paper";
-		playerUnit.CurrentHand = "Paper";
-		_playerRockSprite.SetActive(false);
-		_playerPaperSprite.SetActive(true);
-		_playerScissorsSprite.SetActive(false);
-		_playerUnknownSprite.SetActive(false);
+    public void RockButton()
+    {
+        if (state != BattleState.PLAYERTURN && playerUnit.CurrentHand != "Unknown")
+        {
+            return;
+        }
 
-		StartCoroutine(PlayerHand());
-	}
+        HandManager.PlayHand("Rock");
+        dialogueText.text = "You have chosen rock";
+        playerUnit.CurrentHand = "Rock";
+        _playerRockSprite.SetActive(true);
+        _playerPaperSprite.SetActive(false);
+        _playerScissorsSprite.SetActive(false);
+        _playerUnknownSprite.SetActive(false);
 
-	public void ScissorsButton()
-	{
-		if (state != BattleState.PLAYERTURN && playerUnit.CurrentHand != "Unknown")
-		{
-			return;
-		}
+        StartCoroutine(PlayerHand());
+    }
 
-		HandManager.PlayHand("Scissors");
-		dialogueText.text = "You have chosen scissors";
-		playerUnit.CurrentHand = "Scissors";
-		_playerRockSprite.SetActive(false);
-		_playerPaperSprite.SetActive(false);
-		_playerScissorsSprite.SetActive(true);
-		_playerUnknownSprite.SetActive(false);		
+    public void PaperButton()
+    {
+        if (state != BattleState.PLAYERTURN && playerUnit.CurrentHand != "Unknown")
+        {
+            return;
+        }
 
-		StartCoroutine(PlayerHand());
-	}
+        HandManager.PlayHand("Paper");
+        dialogueText.text = "You have chosen paper";
+        playerUnit.CurrentHand = "Paper";
+        _playerRockSprite.SetActive(false);
+        _playerPaperSprite.SetActive(true);
+        _playerScissorsSprite.SetActive(false);
+        _playerUnknownSprite.SetActive(false);
 
-	public IEnumerator PlayerDamagedFlash() //IEnumerator is useful to add delays
-    { 
-        while (_playerIsDamaged) 
+        StartCoroutine(PlayerHand());
+    }
+
+    public void ScissorsButton()
+    {
+        if (state != BattleState.PLAYERTURN && playerUnit.CurrentHand != "Unknown")
+        {
+            return;
+        }
+
+        HandManager.PlayHand("Scissors");
+        dialogueText.text = "You have chosen scissors";
+        playerUnit.CurrentHand = "Scissors";
+        _playerRockSprite.SetActive(false);
+        _playerPaperSprite.SetActive(false);
+        _playerScissorsSprite.SetActive(true);
+        _playerUnknownSprite.SetActive(false);
+
+        StartCoroutine(PlayerHand());
+    }
+
+    IEnumerator PlayerHand()
+    {
+        state = BattleState.ENEMYTURN;
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(EnemyTurn());
+    }
+
+    #endregion 
+
+    #region Display Utility
+
+    public IEnumerator PlayerDamagedFlash() //IEnumerator is useful to add delays
+    {
+        while (_playerIsDamaged)
         {
             _playerSpriteRenderer.color = new Color(1f, 1f, 1f, 0f); //Flashing animation from max opacity to none (r,g,b,a)
             yield return new WaitForSeconds(_playerDamagedFlashDelay);
@@ -312,4 +343,5 @@ public class BattleSystem : MonoBehaviour
         _playerIsDamaged = false;
     }
 
+    #endregion
 }

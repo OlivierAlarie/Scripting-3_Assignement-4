@@ -1264,9 +1264,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f36616fc90507ed419289ae37266212f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameText: {fileID: 1279384296}
-  handText: {fileID: 1872229981}
-  hpSlider: {fileID: 1738680528}
+  NameText: {fileID: 1279384296}
+  HandText: {fileID: 1872229981}
+  HpSlider: {fileID: 1738680528}
 --- !u!114 &978546683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2698,9 +2698,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f36616fc90507ed419289ae37266212f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameText: {fileID: 1166149988}
-  handText: {fileID: 279674488}
-  hpSlider: {fileID: 1142284058}
+  NameText: {fileID: 1166149988}
+  HandText: {fileID: 279674488}
+  HpSlider: {fileID: 1142284058}
 --- !u!114 &1727677076
 MonoBehaviour:
   m_ObjectHideFlags: 0
