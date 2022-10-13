@@ -8,32 +8,36 @@ public enum BattleState { START, PLAYERTURN, ENEMYTURN, BATTLEPHASE, WON, LOST }
 
 public class BattleSystem : MonoBehaviour
 {
-    public GameObject playerPrefab;
-    public GameObject enemyPrefab;
-    public Transform playerBattleStation;
-    public Transform enemyBattleStation;
-    Unit playerUnit;
-    Unit enemyUnit;
-    public Text dialogueText;
-    public BattleHUD playerHUD;
-    public BattleHUD enemyHUD;
     public BattleState state;
+    public Text dialogueText;
     public HandManager HandManager;
 
     [Header("Player Variables")]
+    public GameObject playerPrefab;
+    private Unit _playerUnit;
+    public Transform playerBattleStation;
+    public BattleHUD playerHUD;
+    [SerializeField] private SpriteRenderer _playerSpriteRenderer;
+
     [SerializeField] private GameObject _PlayerButtons;
     private float _playerDamagedTimeDelay = 1f;
     private float _playerDamagedFlashDelay = 0.1f;
     private bool _playerIsDamaged = false;
-    [SerializeField] private SpriteRenderer _playerSpriteRenderer;
+    
     [SerializeField] private GameObject _playerRockSprite;
     [SerializeField] private GameObject _playerPaperSprite;
     [SerializeField] private GameObject _playerScissorsSprite;
     [SerializeField] private GameObject _playerUnknownSprite;
 
     [Header("Enemy Variables")]
-    public string[] Choices;
+    public GameObject enemyPrefab;
+    Unit enemyUnit;
+    public Transform enemyBattleStation;
+    public BattleHUD enemyHUD;
     [SerializeField] private SpriteRenderer _enemySpriteRenderer;
+
+    public string[] Choices;
+    
     [SerializeField] private GameObject _enemyRockSprite;
     [SerializeField] private GameObject _enemyPaperSprite;
     [SerializeField] private GameObject _enemyScissorsSprite;
@@ -52,24 +56,15 @@ public class BattleSystem : MonoBehaviour
     IEnumerator SetupBattle()
     {
         GameObject playerGO = Instantiate(playerPrefab, playerBattleStation);
-        playerUnit = playerGO.GetComponent<Unit>();
+        _playerUnit = playerGO.GetComponent<Unit>();
 
         GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
         enemyUnit = enemyGO.GetComponent<Unit>();
 
         dialogueText.text = enemyUnit.UnitName + " is ready!";
 
-        yield return new WaitForSeconds(1f);
-
-        Debug.Log("SetHUD of Player");
-        playerHUD.SetHUD(playerUnit);
-
-        Debug.Log("SetHUD of Enemy");
-        Debug.Log(enemyUnit);
-
+        playerHUD.SetHUD(_playerUnit);
         enemyHUD.SetHUD(enemyUnit);
-
-        Debug.Log("Wait");
         yield return new WaitForSeconds(2f);
 
         _PlayerButtons.SetActive(true);
@@ -84,12 +79,12 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator PlayerAttack()
     {
-        bool isDead = enemyUnit.TakeDamage(playerUnit.Damage);
+        bool isDead = enemyUnit.TakeDamage(_playerUnit.Damage);
 
         yield return new WaitForSeconds(1f);
 
         enemyHUD.SetHP(enemyUnit.CurrentHP);
-        dialogueText.text = playerUnit.UnitName + " has won this round!";
+        dialogueText.text = _playerUnit.UnitName + " has won this round!";
 
         yield return new WaitForSeconds(1f);
 
@@ -111,9 +106,9 @@ public class BattleSystem : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        bool isDead = playerUnit.TakeDamage(enemyUnit.Damage);
+        bool isDead = _playerUnit.TakeDamage(enemyUnit.Damage);
 
-        playerHUD.SetHP(playerUnit.CurrentHP);
+        playerHUD.SetHP(_playerUnit.CurrentHP);
 
         _playerIsDamaged = true;
         StartCoroutine(PlayerDamagedFlash());
@@ -149,7 +144,7 @@ public class BattleSystem : MonoBehaviour
     void PlayerTurn()
     {
         dialogueText.text = "Choose an action:";
-        playerUnit.CurrentHand = "Unknown";
+        _playerUnit.CurrentHand = "Unknown";
         enemyUnit.CurrentHand = "Unknown";
         _playerRockSprite.SetActive(false);
         _playerPaperSprite.SetActive(false);
@@ -205,7 +200,7 @@ public class BattleSystem : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
 
-        if (playerUnit.CurrentHand == "Rock")
+        if (_playerUnit.CurrentHand == "Rock")
         {
             if (enemyUnit.CurrentHand == "Scissors")
             {
@@ -215,8 +210,12 @@ public class BattleSystem : MonoBehaviour
             {
                 StartCoroutine(EnemyAttack());
             }
+            else
+            {
+                StartCoroutine(Tiebreaker());
+            }
         }
-        else if (playerUnit.CurrentHand == "Paper")
+        else if (_playerUnit.CurrentHand == "Paper")
         {
             if (enemyUnit.CurrentHand == "Rock")
             {
@@ -227,20 +226,25 @@ public class BattleSystem : MonoBehaviour
             {
                 StartCoroutine(EnemyAttack());
             }
+            else
+            {
+                StartCoroutine(Tiebreaker());
+            }
         }
-        else if (playerUnit.CurrentHand == "Scissors")
+        else if (_playerUnit.CurrentHand == "Scissors")
         {
             if (enemyUnit.CurrentHand == "Paper")
             {
                 StartCoroutine(PlayerAttack());
-            }else if (enemyUnit.CurrentHand == "Rock")
+            }
+            else if (enemyUnit.CurrentHand == "Rock")
             {
                 StartCoroutine(EnemyAttack());
             }
-        }
-        else
-        {
-            StartCoroutine(Tiebreaker());
+            else
+            {
+                StartCoroutine(Tiebreaker());
+            }
         }
     }
 
@@ -263,14 +267,15 @@ public class BattleSystem : MonoBehaviour
 
     public void RockButton()
     {
-        if (state != BattleState.PLAYERTURN && playerUnit.CurrentHand != "Unknown")
+        if (state != BattleState.PLAYERTURN && _playerUnit.CurrentHand != "Unknown")
         {
             return;
         }
 
         HandManager.PlayHand("Rock");
         dialogueText.text = "You have chosen rock";
-        playerUnit.CurrentHand = "Rock";
+        _playerUnit.CurrentHand = "Rock";
+
         _playerRockSprite.SetActive(true);
         _playerPaperSprite.SetActive(false);
         _playerScissorsSprite.SetActive(false);
@@ -281,14 +286,15 @@ public class BattleSystem : MonoBehaviour
 
     public void PaperButton()
     {
-        if (state != BattleState.PLAYERTURN && playerUnit.CurrentHand != "Unknown")
+        if (state != BattleState.PLAYERTURN && _playerUnit.CurrentHand != "Unknown")
         {
             return;
         }
 
         HandManager.PlayHand("Paper");
         dialogueText.text = "You have chosen paper";
-        playerUnit.CurrentHand = "Paper";
+        _playerUnit.CurrentHand = "Paper";
+
         _playerRockSprite.SetActive(false);
         _playerPaperSprite.SetActive(true);
         _playerScissorsSprite.SetActive(false);
@@ -299,14 +305,15 @@ public class BattleSystem : MonoBehaviour
 
     public void ScissorsButton()
     {
-        if (state != BattleState.PLAYERTURN && playerUnit.CurrentHand != "Unknown")
+        if (state != BattleState.PLAYERTURN && _playerUnit.CurrentHand != "Unknown")
         {
             return;
         }
 
         HandManager.PlayHand("Scissors");
         dialogueText.text = "You have chosen scissors";
-        playerUnit.CurrentHand = "Scissors";
+        _playerUnit.CurrentHand = "Scissors";
+
         _playerRockSprite.SetActive(false);
         _playerPaperSprite.SetActive(false);
         _playerScissorsSprite.SetActive(true);

@@ -2565,28 +2565,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ace5d3b76e8bbd94d8faa070310b062d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  state: 0
+  dialogueText: {fileID: 2083877341}
+  HandManager: {fileID: 1697365168}
   playerPrefab: {fileID: 5674484368629161613, guid: 10021f1ffb851ee42a2f9e2ce33428b7,
     type: 3}
-  enemyPrefab: {fileID: 5046871492963100558, guid: 302bdc8dead690247957754e115acde3,
-    type: 3}
   playerBattleStation: {fileID: 776899475}
-  enemyBattleStation: {fileID: 1466009198}
-  dialogueText: {fileID: 2083877341}
   playerHUD: {fileID: 1727677075}
-  enemyHUD: {fileID: 978546682}
-  state: 0
-  HandManager: {fileID: 1697365168}
-  _PlayerButtons: {fileID: 433245944}
   _playerSpriteRenderer: {fileID: 776899474}
+  _PlayerButtons: {fileID: 433245944}
   _playerRockSprite: {fileID: 2055544231}
   _playerPaperSprite: {fileID: 2140993063}
   _playerScissorsSprite: {fileID: 99314546}
   _playerUnknownSprite: {fileID: 1661405510}
+  enemyPrefab: {fileID: 5046871492963100558, guid: 302bdc8dead690247957754e115acde3,
+    type: 3}
+  enemyBattleStation: {fileID: 1466009198}
+  enemyHUD: {fileID: 978546682}
+  _enemySpriteRenderer: {fileID: 1466009197}
   Choices:
   - Rock
   - Paper
   - Scissors
-  _enemySpriteRenderer: {fileID: 1466009197}
   _enemyRockSprite: {fileID: 356420713}
   _enemyPaperSprite: {fileID: 1501286897}
   _enemyScissorsSprite: {fileID: 1708676853}
