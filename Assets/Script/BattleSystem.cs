@@ -318,18 +318,18 @@ public class BattleSystem : MonoBehaviour
 
     #region Display Utility
 
-    public IEnumerator PlayerDamagedFlash(SpriteRenderer baseSprite) //IEnumerator is useful to add delays
+    public IEnumerator PlayerDamagedFlash(SpriteRenderer baseSprite)
     {
         while (_playerIsDamaged)
         {
-            baseSprite.color = new Color(1f, 1f, 1f, 0f); //Flashing animation from max opacity to none (r,g,b,a)
+            baseSprite.color = new Color(1f, 1f, 1f, 0f);
             yield return new WaitForSeconds(_playerDamagedFlashDelay);
             baseSprite.color = new Color(1f, 1f, 1f, 1f);
             yield return new WaitForSeconds(_playerDamagedFlashDelay);
         }
     }
 
-    public IEnumerator HandlePlayerDamagedDelay() //Timer on the player damaged state
+    public IEnumerator HandlePlayerDamagedDelay()
     {
         yield return new WaitForSeconds(_playerDamagedTimeDelay);
         _playerIsDamaged = false;
