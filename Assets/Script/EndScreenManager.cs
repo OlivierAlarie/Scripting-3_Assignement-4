@@ -12,18 +12,14 @@ public class EndScreenManager : MonoBehaviour
 
     public void ReturnButton() 
     {
-        //StatsManager.Instance.IncreaseRetryText();
         StatsManager.Instance.ResetGameText();
         SceneManager.LoadScene(0);
-        //StatsManager.Instance.Timer = 0f;
-        //StatsManager.Instance.RetryCounter = 0;
     }
 
         public void RetryButton() 
     {
         StatsManager.Instance.IncreaseRetryText();
+        StatsManager.Instance.ResetRoundText();
         SceneManager.LoadScene(0);
-        //StatsManager.Instance.Timer = 0f;
-        //StatsManager.Instance.RetryCounter = 0;
     }
 }

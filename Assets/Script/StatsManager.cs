@@ -42,6 +42,23 @@ public class StatsManager : MonoBehaviour
         {
             TimeCounter();
         }
+        
+        Scene currentScene = SceneManager.GetActiveScene();
+        string sceneName = currentScene.name;
+
+        if (sceneName == "Start")
+        {
+            _roundCountTMP.text = ("");
+            _retryCountTMP.text = ("");
+            _timerTMP.text = ("");
+            _turnStageTMP.text = ("");
+        }
+        
+        else if (sceneName == "Combat")
+        {
+            _roundCountTMP.text = ("Round: " + RoundCounter);
+            _retryCountTMP.text = ("Retry: " + RetryCounter);
+        }
     }
 
     public void TimeCounter()
@@ -80,6 +97,8 @@ public class StatsManager : MonoBehaviour
 
     public void ResetRoundText()
     {
+        Timer = 0;
+        _timerTMP.text = ("Timer: " + TimeApprox.ToString());
         RoundCounter = 0;
         _roundCountTMP.text = ("Round: " + RoundCounter);
     }
@@ -91,7 +110,7 @@ public class StatsManager : MonoBehaviour
         RetryCounter = 0;
         _retryCountTMP.text = ("Retry: " + RetryCounter);
         Timer = 0f;
-        TimeApprox = 0;
+        //TimeApprox = 0;
         _timerTMP.text = ("Timer: " + TimeApprox.ToString());
     }
 }

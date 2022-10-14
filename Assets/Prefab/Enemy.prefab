@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 475d8d7ed9646504888a5702b5d7ed33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UnitName: Oli
+  UnitName: Enemy
   Damage: 10
   MaxHP: 30
   CurrentHP: 30
