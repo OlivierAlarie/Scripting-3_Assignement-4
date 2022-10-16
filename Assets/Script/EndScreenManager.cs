@@ -10,13 +10,13 @@ public class EndScreenManager : MonoBehaviour
         Cursor.visible = true;
     }
 
-    public void ReturnButton() 
+    public void ReturnButton()
     {
         StatsManager.Instance.ResetGameText();
         SceneManager.LoadScene(0);
     }
 
-        public void RetryButton() 
+    public void RetryButton()
     {
         StatsManager.Instance.IncreaseRetryText();
         StatsManager.Instance.ResetRoundText();

@@ -13,24 +13,25 @@ public class BattleSystem : MonoBehaviour
     public HandManager HandManager;
     public Sprite[] HandsSprites;
 
-    [Header("Player Variables")]
-    public GameObject playerPrefab;
-    private Unit _playerUnit;
-    public BattleHUD playerHUD;
-    public Transform playerBattleStation;
-    [SerializeField] private SpriteRenderer _playerBaseSprtRndrr;
-    [SerializeField] private Image _playerHandImg;
-
-    [SerializeField] private GameObject _PlayerButtons;
     private float _playerDamagedTimeDelay = 1f;
     private float _playerDamagedFlashDelay = 0.1f;
     private bool _playerIsDamaged = false;
 
+    [Header("Player Variables")]
+    public GameObject PlayerPrefab;
+    private Unit _playerUnit;
+    public BattleHUD PlayerHUD;
+    public Transform PlayerBattleStation;
+    [SerializeField] private SpriteRenderer _playerBaseSprtRndrr;
+    [SerializeField] private Image _playerHandImg;
+
+    [SerializeField] private GameObject _playerButtons;
+
     [Header("Enemy Variables")]
-    public GameObject enemyPrefab;
-    Unit enemyUnit;
-    public BattleHUD enemyHUD;
-    public Transform enemyBattleStation;
+    public GameObject EnemyPrefab;
+    private Unit _enemyUnit;
+    public BattleHUD EnemyHUD;
+    public Transform EnemyBattleStation;
     [SerializeField] private SpriteRenderer _enemyBaseSprtRndrr;
     [SerializeField] private Image _enemyHandImg;
 
@@ -50,19 +51,19 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator SetupBattle()
     {
-        GameObject playerGO = Instantiate(playerPrefab, playerBattleStation);
+        GameObject playerGO = Instantiate(PlayerPrefab, PlayerBattleStation);
         _playerUnit = playerGO.GetComponent<Unit>();
 
-        GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
-        enemyUnit = enemyGO.GetComponent<Unit>();
+        GameObject enemyGO = Instantiate(EnemyPrefab, EnemyBattleStation);
+        _enemyUnit = enemyGO.GetComponent<Unit>();
 
-        DialogueText.text = enemyUnit.UnitName + " is ready!";
+        DialogueText.text = _enemyUnit.UnitName + " is ready!";
 
-        playerHUD.SetHUD(_playerUnit);
-        enemyHUD.SetHUD(enemyUnit);
+        PlayerHUD.SetHUD(_playerUnit);
+        EnemyHUD.SetHUD(_enemyUnit);
         yield return new WaitForSeconds(2f);
 
-        _PlayerButtons.SetActive(true);
+        _playerButtons.SetActive(true);
 
         ChangeTurnStage(BattleState.PLAYERTURN);
 
@@ -77,7 +78,7 @@ public class BattleSystem : MonoBehaviour
     {
         DialogueText.text = "Choose an action:";
         _playerUnit.CurrentHand = "Unknown";
-        enemyUnit.CurrentHand = "Unknown";
+        _enemyUnit.CurrentHand = "Unknown";
 
         _playerHandImg.sprite = HandsSprites[0];
         _enemyHandImg.sprite = HandsSprites[0];
@@ -91,7 +92,7 @@ public class BattleSystem : MonoBehaviour
 
         if (enemyChoice == "Rock")
         {
-            enemyUnit.CurrentHand = "Rock";
+            _enemyUnit.CurrentHand = "Rock";
             HandManager.PlayHand("Rock");
 
             _enemyHandImg.sprite = HandsSprites[1];
@@ -99,7 +100,7 @@ public class BattleSystem : MonoBehaviour
 
         else if (enemyChoice == "Paper")
         {
-            enemyUnit.CurrentHand = "Paper";
+            _enemyUnit.CurrentHand = "Paper";
             HandManager.PlayHand("Paper");
 
             _enemyHandImg.sprite = HandsSprites[2];
@@ -107,7 +108,7 @@ public class BattleSystem : MonoBehaviour
 
         else if (enemyChoice == "Scissors")
         {
-            enemyUnit.CurrentHand = "Scissors";
+            _enemyUnit.CurrentHand = "Scissors";
             HandManager.PlayHand("Scissors");
 
             _enemyHandImg.sprite = HandsSprites[3];
@@ -126,11 +127,11 @@ public class BattleSystem : MonoBehaviour
 
         if (_playerUnit.CurrentHand == "Rock")
         {
-            if (enemyUnit.CurrentHand == "Scissors")
+            if (_enemyUnit.CurrentHand == "Scissors")
             {
                 StartCoroutine(PlayerAttack());
             }
-            else if (enemyUnit.CurrentHand == "Paper")
+            else if (_enemyUnit.CurrentHand == "Paper")
             {
                 StartCoroutine(EnemyAttack());
             }
@@ -141,12 +142,12 @@ public class BattleSystem : MonoBehaviour
         }
         else if (_playerUnit.CurrentHand == "Paper")
         {
-            if (enemyUnit.CurrentHand == "Rock")
+            if (_enemyUnit.CurrentHand == "Rock")
             {
                 StartCoroutine(PlayerAttack());
 
             }
-            else if (enemyUnit.CurrentHand == "Scissors")
+            else if (_enemyUnit.CurrentHand == "Scissors")
             {
                 StartCoroutine(EnemyAttack());
             }
@@ -157,11 +158,11 @@ public class BattleSystem : MonoBehaviour
         }
         else if (_playerUnit.CurrentHand == "Scissors")
         {
-            if (enemyUnit.CurrentHand == "Paper")
+            if (_enemyUnit.CurrentHand == "Paper")
             {
                 StartCoroutine(PlayerAttack());
             }
-            else if (enemyUnit.CurrentHand == "Rock")
+            else if (_enemyUnit.CurrentHand == "Rock")
             {
                 StartCoroutine(EnemyAttack());
             }
@@ -252,11 +253,11 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator PlayerAttack()
     {
-        bool isDead = enemyUnit.TakeDamage(_playerUnit.Damage);
+        bool isDead = _enemyUnit.TakeDamage(_playerUnit.Damage);
 
         yield return new WaitForSeconds(1f);
 
-        enemyHUD.SetHP(enemyUnit.CurrentHP);
+        EnemyHUD.SetHP(_enemyUnit.CurrentHP);
         DialogueText.text = _playerUnit.UnitName + " has won this round!";
 
         _playerIsDamaged = true;
@@ -279,13 +280,13 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator EnemyAttack()
     {
-        DialogueText.text = enemyUnit.UnitName + " has won this round...";
+        DialogueText.text = _enemyUnit.UnitName + " has won this round...";
 
         yield return new WaitForSeconds(1f);
 
-        bool isDead = _playerUnit.TakeDamage(enemyUnit.Damage);
+        bool isDead = _playerUnit.TakeDamage(_enemyUnit.Damage);
 
-        playerHUD.SetHP(_playerUnit.CurrentHP);
+        PlayerHUD.SetHP(_playerUnit.CurrentHP);
 
         _playerIsDamaged = true;
         StartCoroutine(PlayerDamagedFlash(_playerBaseSprtRndrr));

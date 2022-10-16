@@ -11,13 +11,13 @@ public class Menu : MonoBehaviour
         Time.timeScale = 1f;
     }
 
-    public void StartButton() 
+    public void StartButton()
     {
         StatsManager.Instance.SetPlaying(true);
         SceneManager.LoadScene(1);
     }
 
-    public void QuitButton() 
+    public void QuitButton()
     {
         Application.Quit();
     }

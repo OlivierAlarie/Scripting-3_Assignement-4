@@ -19,26 +19,4 @@ public class Unit : MonoBehaviour
 		else
 			return false;
 	}
-
-	public void Heal(int amount)
-	{
-		CurrentHP += amount;
-		if (CurrentHP > MaxHP)
-			CurrentHP = MaxHP;
-	}
-
-	public void HandChosen(string hand)
-	{
-		if (hand == "rock")
-		{
-			CurrentHand = "Rock";
-		}
-		
-		else if (hand == "paper")
-		{
-			CurrentHand = "Paper";
-		}
-
-		else {CurrentHand = "Scissors";}
-	}
 }

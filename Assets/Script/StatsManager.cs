@@ -42,7 +42,7 @@ public class StatsManager : MonoBehaviour
         {
             TimeCounter();
         }
-        
+
         Scene currentScene = SceneManager.GetActiveScene();
         string sceneName = currentScene.name;
 
@@ -53,7 +53,7 @@ public class StatsManager : MonoBehaviour
             _timerTMP.text = ("");
             _turnStageTMP.text = ("");
         }
-        
+
         else if (sceneName == "Combat")
         {
             _roundCountTMP.text = ("Round: " + RoundCounter);

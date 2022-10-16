@@ -2266,17 +2266,17 @@ MonoBehaviour:
   - {fileID: -107392038, guid: d9f7c827e5b2cd147b8fdac5fcd87bc6, type: 3}
   - {fileID: -517426050, guid: d9f7c827e5b2cd147b8fdac5fcd87bc6, type: 3}
   - {fileID: -798721760, guid: d9f7c827e5b2cd147b8fdac5fcd87bc6, type: 3}
-  playerPrefab: {fileID: 5674484368629161613, guid: 10021f1ffb851ee42a2f9e2ce33428b7,
+  PlayerPrefab: {fileID: 5674484368629161613, guid: 10021f1ffb851ee42a2f9e2ce33428b7,
     type: 3}
-  playerHUD: {fileID: 1727677075}
-  playerBattleStation: {fileID: 776899475}
+  PlayerHUD: {fileID: 1727677075}
+  PlayerBattleStation: {fileID: 776899475}
   _playerBaseSprtRndrr: {fileID: 776899474}
   _playerHandImg: {fileID: 1661405512}
-  _PlayerButtons: {fileID: 433245944}
-  enemyPrefab: {fileID: 5046871492963100558, guid: 302bdc8dead690247957754e115acde3,
+  _playerButtons: {fileID: 433245944}
+  EnemyPrefab: {fileID: 5046871492963100558, guid: 302bdc8dead690247957754e115acde3,
     type: 3}
-  enemyHUD: {fileID: 978546682}
-  enemyBattleStation: {fileID: 1466009198}
+  EnemyHUD: {fileID: 978546682}
+  EnemyBattleStation: {fileID: 1466009198}
   _enemyBaseSprtRndrr: {fileID: 1466009197}
   _enemyHandImg: {fileID: 1214213725}
   Choices:
