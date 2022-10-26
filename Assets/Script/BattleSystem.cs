@@ -57,7 +57,7 @@ public class BattleSystem : MonoBehaviour
         GameObject enemyGO = Instantiate(EnemyPrefab, EnemyBattleStation);
         _enemyUnit = enemyGO.GetComponent<Unit>();
 
-        DialogueText.text = _enemyUnit.UnitName + " is ready!";
+        DialogueText.text = "The fate of the world is in your hand!";
 
         PlayerHUD.SetHUD(_playerUnit);
         EnemyHUD.SetHUD(_enemyUnit);
