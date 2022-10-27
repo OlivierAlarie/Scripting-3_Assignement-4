@@ -11,6 +11,7 @@ public class BattleSystem : MonoBehaviour
     public BattleState State;
     public Text DialogueText;
     public HandManager HandManager;
+    public PauseManager PauseMngr;
     public Sprite[] HandsSprites;
 
     private float _playerDamagedTimeDelay = 1f;
@@ -47,6 +48,14 @@ public class BattleSystem : MonoBehaviour
 
         StartCoroutine(SetupBattle());
         //Toolbox.GetInstance().StatsManager();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            PauseMngr.Pause();
+        }
     }
 
     IEnumerator SetupBattle()
